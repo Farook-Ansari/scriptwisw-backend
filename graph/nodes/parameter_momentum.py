@@ -14,7 +14,7 @@ from models.evaluation_models import ParameterEvaluation
 from graph.state import GraphState
 
 
-def evaluate_momentum(state: GraphState) -> GraphState:
+def evaluate_momentum(state: GraphState) -> dict:
     """
     Node for: STRUCTURAL MOMENTUM & ESCALATION
 
@@ -33,10 +33,6 @@ def evaluate_momentum(state: GraphState) -> GraphState:
     )
 
     chain = prompt | llm | JsonOutputParser()
-
-    # Make sure parameter_results dict exists
-    if "parameter_results" not in state or state["parameter_results"] is None:
-        state["parameter_results"] = {}
 
     # Invoke model
     result: Dict[str, Any] = chain.invoke(
@@ -65,5 +61,4 @@ def evaluate_momentum(state: GraphState) -> GraphState:
         evidence=evidence,
     )
 
-    state["parameter_results"]["momentum"] = param_eval
-    return state
+    return {"parameter_results": {"momentum": param_eval}}

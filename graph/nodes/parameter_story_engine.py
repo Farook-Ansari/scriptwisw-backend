@@ -8,7 +8,7 @@ from graph.state import GraphState
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 
-def evaluate_story_engine(state: GraphState) -> GraphState:
+def evaluate_story_engine(state: GraphState) -> dict:
     llm = get_llm()
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -37,5 +37,5 @@ def evaluate_story_engine(state: GraphState) -> GraphState:
         evidence=result.get("evidence", []),
     )
 
-    state["parameter_results"]["story_engine"] = param_eval
-    return state
+    # Return only the keys we're modifying
+    return {"parameter_results": {"story_engine": param_eval}}

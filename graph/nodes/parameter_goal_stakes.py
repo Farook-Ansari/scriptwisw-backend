@@ -65,7 +65,7 @@ Your focus is ONLY:
 
 You MUST return STRICT JSON ONLY, matching this exact schema:
 
-{
+{{
   "score": 7.5,
   "confidence": 0.82,
   "reasoning": "2–4 paragraphs of analysis...",
@@ -73,7 +73,7 @@ You MUST return STRICT JSON ONLY, matching this exact schema:
     "Concrete evidence quote or paraphrase from the synopsis...",
     "Another specific reference..."
   ]
-}
+}}
 
 Rules:
 - `score` must be a float between 0 and 10.
@@ -118,7 +118,7 @@ def _call_goal_stakes_model(state: GraphState) -> Dict[str, Any]:
     )
 
 
-def evaluate_goal_stakes(state: GraphState) -> GraphState:
+def evaluate_goal_stakes(state: GraphState) -> dict:
     """
     LangGraph node: evaluate 'Protagonist Goal, Stakes & Conflict Loop'.
 
@@ -137,8 +137,7 @@ def evaluate_goal_stakes(state: GraphState) -> GraphState:
             reasoning=f"Model failure while evaluating goal/stakes/conflict: {exc}",
             evidence=[],
         )
-        state["parameter_results"]["goal_stakes"] = pe
-        return state
+        return {"parameter_results": {"goal_stakes": pe}}
 
     # Defensive parsing
     score = float(result.get("score", 0.0))
@@ -164,11 +163,7 @@ def evaluate_goal_stakes(state: GraphState) -> GraphState:
         evidence=evidence,
     )
 
-    params: Dict[str, ParameterEvaluation] = state.get("parameter_results", {})
-    params["goal_stakes"] = pe
-    state["parameter_results"] = params
-
-    return state
+    return {"parameter_results": {"goal_stakes": pe}}
 
 
 # Optional alias if anything imports this older style name

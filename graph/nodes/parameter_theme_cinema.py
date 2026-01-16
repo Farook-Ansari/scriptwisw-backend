@@ -14,17 +14,13 @@ from models.evaluation_models import ParameterEvaluation
 from graph.state import GraphState
 
 
-def evaluate_theme_cinema(state: GraphState) -> GraphState:
+def evaluate_theme_cinema(state: GraphState) -> dict:
     """
     Node for: THEME EXPRESSION & CINEMATIC DRAMATISATION
 
     Uses THEME_CINEMA_* prompts and writes a ParameterEvaluation into:
         state["parameter_results"]["theme_cinema"]
     """
-
-    # Make sure container exists
-    if "parameter_results" not in state or state["parameter_results"] is None:
-        state["parameter_results"] = {}
 
     llm = get_llm()
 
@@ -58,8 +54,7 @@ def evaluate_theme_cinema(state: GraphState) -> GraphState:
             reasoning=f"Model failure while evaluating theme & cinema: {exc}",
             evidence=[],
         )
-        state["parameter_results"]["theme_cinema"] = fallback
-        return state
+        return {"parameter_results": {"theme_cinema": fallback}}
 
     # ---- Defensive parsing of LLM JSON ----
     score = raw.get("score", 0.0)
@@ -94,5 +89,4 @@ def evaluate_theme_cinema(state: GraphState) -> GraphState:
         evidence=evidence,
     )
 
-    state["parameter_results"]["theme_cinema"] = param_eval
-    return state
+    return {"parameter_results": {"theme_cinema": param_eval}}

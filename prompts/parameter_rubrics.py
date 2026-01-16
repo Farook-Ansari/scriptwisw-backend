@@ -200,7 +200,7 @@ Use the following rubric as your checklist:
 
 OUTPUT FORMAT (STRICT JSON ONLY):
 
-{{
+{{{{
   "score": 0.0,
   "confidence": 0.0,
   "reasoning": "2–4 paragraphs of detailed analysis of the story engine...",
@@ -208,7 +208,7 @@ OUTPUT FORMAT (STRICT JSON ONLY):
     "Concrete evidence quote or paraphrase from the synopsis...",
     "Another specific reference..."
   ]
-}}
+}}}}
 
 Rules:
 - `score` must be a float between 0 and 10.
@@ -263,7 +263,7 @@ Use this rubric as your detailed checklist:
 
 You MUST return STRICT JSON ONLY, matching this exact schema:
 
-{{
+{{{{
   "score": 0.0,
   "confidence": 0.0,
   "reasoning": "2–4 paragraphs of analysis...",
@@ -271,7 +271,7 @@ You MUST return STRICT JSON ONLY, matching this exact schema:
     "Concrete evidence quote or paraphrase from the synopsis...",
     "Another specific reference..."
   ]
-}}
+}}}}
 
 Rules:
 - `score` must be a float between 0 and 10.
@@ -323,7 +323,7 @@ Use this rubric as your checklist:
 
 You MUST return STRICT JSON ONLY with this schema:
 
-{{
+{{{{
   "score": 0.0,
   "confidence": 0.0,
   "reasoning": "2–4 paragraphs of detailed analysis...",
@@ -331,7 +331,7 @@ You MUST return STRICT JSON ONLY with this schema:
     "Concrete moment or sequence from the synopsis that shows escalation or lack of it...",
     "Another specific reference..."
   ]
-}}
+}}}}
 
 Rules:
 - `score` must be a float between 0 and 10.
@@ -374,7 +374,7 @@ Use this rubric as your checklist:
 
 Return STRICT JSON ONLY:
 
-{{
+{{{{
   "score": 0.0,
   "confidence": 0.0,
   "reasoning": "2–4 paragraphs connecting external events to inner journey...",
@@ -382,7 +382,7 @@ Return STRICT JSON ONLY:
     "Specific beat or turning point showing the starting belief / flaw...",
     "Specific beat showing how they are forced to change or pay a price..."
   ]
-}}
+}}}}
 
 Now evaluate:
 
@@ -416,7 +416,7 @@ Use this rubric:
 
 Return STRICT JSON ONLY:
 
-{{
+{{{{
   "score": 0.0,
   "confidence": 0.0,
   "reasoning": "2–4 paragraphs focused on relationship dynamics...",
@@ -424,7 +424,7 @@ Return STRICT JSON ONLY:
     "Specific relationship beat that adds pressure or conflict...",
     "Specific supporting character choice that affects the story..."
   ]
-}}
+}}}}
 
 TITLE: {{title}}
 LOGLINE: {{logline}}
@@ -456,7 +456,7 @@ Use this rubric:
 
 Return STRICT JSON ONLY:
 
-{{
+{{{{
   "score": 0.0,
   "confidence": 0.0,
   "reasoning": "2–4 paragraphs analysing believability of reactions and social context...",
@@ -464,7 +464,7 @@ Return STRICT JSON ONLY:
     "Concrete moment where a reaction feels truthful or false...",
     "Concrete social detail (family, class, culture) that feels real or generic..."
   ]
-}}
+}}}}
 
 TITLE: {{title}}
 LOGLINE: {{logline}}
@@ -496,7 +496,7 @@ Use this rubric:
 
 Return STRICT JSON ONLY:
 
-{{
+{{{{
   "score": 0.0,
   "confidence": 0.0,
   "reasoning": "2–4 paragraphs focused on setting, rules, specificity...",
@@ -504,7 +504,7 @@ Return STRICT JSON ONLY:
     "Specific world detail that feels vivid / unique / generic...",
     "Specific example of how the world affects plot or character..."
   ]
-}}
+}}}}
 
 TITLE: {{title}}
 LOGLINE: {{logline}}
@@ -535,7 +535,7 @@ Use this rubric:
 
 Return STRICT JSON ONLY:
 
-{{
+{{{{
   "score": 0.0,
   "confidence": 0.0,
   "reasoning": "2–4 paragraphs connecting theme to events and images...",
@@ -543,7 +543,7 @@ Return STRICT JSON ONLY:
     "Specific scene or image that expresses theme...",
     "Specific ironic reversal or choice that reinforces or undermines the message..."
   ]
-}}
+}}}}
 
 TITLE: {{title}}
 LOGLINE: {{logline}}
@@ -574,7 +574,7 @@ Use this rubric:
 
 Return STRICT JSON ONLY:
 
-{{
+{{{{
   "score": 0.0,
   "confidence": 0.0,
   "reasoning": "2–3 paragraphs from a dev exec POV...",
@@ -582,7 +582,7 @@ Return STRICT JSON ONLY:
     "Specific element that could be a logline hook, poster or trailer moment...",
     "Specific reason why it feels generic or forgettable if that is the case..."
   ]
-}}
+}}}}
 
 TITLE: {{title}}
 LOGLINE: {{logline}}
@@ -613,7 +613,7 @@ Use this rubric:
 
 Return STRICT JSON ONLY:
 
-{{
+{{{{
   "score": 0.0,
   "confidence": 0.0,
   "reasoning": "2–3 paragraphs from a market / strategy POV...",
@@ -621,7 +621,7 @@ Return STRICT JSON ONLY:
     "Specific tonal or conceptual choice that signals a clear audience...",
     'Specific reason why the project feels hard to position (if so)...'
   ]
-}}
+}}}}
 
 TITLE: {{title}}
 LOGLINE: {{logline}}

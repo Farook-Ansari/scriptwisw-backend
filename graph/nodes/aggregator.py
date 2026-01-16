@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Any
 
 from ..state import GraphState
 from models.evaluation_models import (
@@ -8,7 +8,7 @@ from models.evaluation_models import (
 )
 
 
-def aggregate_scores(state: GraphState) -> GraphState:
+def aggregate_scores(state: GraphState) -> Dict[str, Any]:
     """
     Collect all per-parameter evaluations, compute overall scores + verdict,
     and stash them back onto the state.
@@ -18,8 +18,13 @@ def aggregate_scores(state: GraphState) -> GraphState:
         state.get("parameter_results") or {}
     )
 
+    # Debug: print what we received
+    print(f"[AGGREGATOR] Received {len(param_results)} parameter results")
+    print(f"[AGGREGATOR] Keys: {list(param_results.keys())}")
+
     # If something went wrong upstream, fail gracefully
     if not param_results:
+        print("[AGGREGATOR] No parameter results found, returning 0.0")
         overall = OverallEvaluation(
             average_score=0.0,
             weighted_score=None,
@@ -27,14 +32,26 @@ def aggregate_scores(state: GraphState) -> GraphState:
             parameter_evaluations={},
             metadata={"reason": "No parameter evaluations produced"},
         )
-        state["overall"] = overall
-        state["overall_average_score"] = 0.0
-        state["overall_weighted_score"] = None
-        state["overall_verdict"] = overall.verdict.value
-        return state
+        return {
+            "overall": overall,
+            "overall_average_score": 0.0,
+            "overall_weighted_score": None,
+            "overall_verdict": overall.verdict.value,
+        }
 
-    scores = [p.raw_score for p in param_results.values()]
-    avg_score = sum(scores) / len(scores)
+    # Extract scores - handle both Pydantic model and dict
+    scores = []
+    for p in param_results.values():
+        if hasattr(p, 'raw_score'):
+            scores.append(p.raw_score)
+        elif isinstance(p, dict):
+            scores.append(p.get('raw_score', 0.0))
+        else:
+            scores.append(0.0)
+    
+    avg_score = sum(scores) / len(scores) if scores else 0.0
+    print(f"[AGGREGATOR] Scores: {scores}")
+    print(f"[AGGREGATOR] Average score: {avg_score}")
 
     # Simple banding – can be tuned later
     if avg_score >= 8.5:
@@ -57,14 +74,15 @@ def aggregate_scores(state: GraphState) -> GraphState:
         },
     )
 
-    # Store back onto graph state
-    state["overall"] = overall
-    state["overall_average_score"] = avg_score
-    state["overall_weighted_score"] = None
-    state["overall_verdict"] = verdict.value
-
-    return state
+    # Return only the keys we're modifying
+    return {
+        "overall": overall,
+        "overall_average_score": avg_score,
+        "overall_weighted_score": None,
+        "overall_verdict": verdict.value,
+    }
 
 
 # Backwards-compatible alias (just in case anything imports this name)
 aggregator_node = aggregate_scores
+

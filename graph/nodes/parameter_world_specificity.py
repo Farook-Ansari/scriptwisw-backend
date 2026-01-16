@@ -14,17 +14,13 @@ from models.evaluation_models import ParameterEvaluation
 from graph.state import GraphState
 
 
-def evaluate_world_specificity(state: GraphState) -> GraphState:
+def evaluate_world_specificity(state: GraphState) -> dict:
     """
     Node for: WORLD, UNIQUENESS & CULTURAL SPECIFICITY
 
     Uses WORLD_SPECIFICITY_* prompts and writes a ParameterEvaluation into:
         state["parameter_results"]["world_specificity"]
     """
-
-    # Ensure container exists
-    if "parameter_results" not in state or state["parameter_results"] is None:
-        state["parameter_results"] = {}
 
     llm = get_llm()
 
@@ -58,8 +54,7 @@ def evaluate_world_specificity(state: GraphState) -> GraphState:
             reasoning=f"Model failure while evaluating world specificity: {exc}",
             evidence=[],
         )
-        state["parameter_results"]["world_specificity"] = fallback
-        return state
+        return {"parameter_results": {"world_specificity": fallback}}
 
     # ---- Defensive parsing of LLM JSON ----
     score = raw.get("score", 0.0)
@@ -94,5 +89,4 @@ def evaluate_world_specificity(state: GraphState) -> GraphState:
         evidence=evidence,
     )
 
-    state["parameter_results"]["world_specificity"] = param_eval
-    return state
+    return {"parameter_results": {"world_specificity": param_eval}}

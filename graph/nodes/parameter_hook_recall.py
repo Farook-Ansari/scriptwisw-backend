@@ -14,17 +14,13 @@ from models.evaluation_models import ParameterEvaluation
 from graph.state import GraphState
 
 
-def evaluate_hook_recall(state: GraphState) -> GraphState:
+def evaluate_hook_recall(state: GraphState) -> dict:
     """
     Node for: MARKET HOOK & RECALL VALUE
 
     Uses HOOK_RECALL_* prompts and writes a ParameterEvaluation into:
         state["parameter_results"]["hook_recall"]
     """
-
-    # Ensure container exists
-    if "parameter_results" not in state or state["parameter_results"] is None:
-        state["parameter_results"] = {}
 
     llm = get_llm()
 
@@ -58,8 +54,7 @@ def evaluate_hook_recall(state: GraphState) -> GraphState:
             reasoning=f"Model failure while evaluating hook & recall: {exc}",
             evidence=[],
         )
-        state["parameter_results"]["hook_recall"] = fallback
-        return state
+        return {"parameter_results": {"hook_recall": fallback}}
 
     # ---- Defensive parsing of LLM JSON ----
     score = raw.get("score", 0.0)
@@ -94,8 +89,7 @@ def evaluate_hook_recall(state: GraphState) -> GraphState:
         evidence=evidence,
     )
 
-    state["parameter_results"]["hook_recall"] = param_eval
-    return state
+    return {"parameter_results": {"hook_recall": param_eval}}
 
 
 # Optional alias if you ever want node-style naming

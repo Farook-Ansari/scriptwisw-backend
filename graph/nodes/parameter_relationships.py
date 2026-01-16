@@ -14,7 +14,7 @@ from models.evaluation_models import ParameterEvaluation
 from graph.state import GraphState
 
 
-def evaluate_relationships(state: GraphState) -> GraphState:
+def evaluate_relationships(state: GraphState) -> dict:
     """
     Node for: RELATIONSHIPS, ENSEMBLE DYNAMICS & EXTERNAL PRESSURE
 
@@ -23,10 +23,6 @@ def evaluate_relationships(state: GraphState) -> GraphState:
     - Writes a ParameterEvaluation into:
         state["parameter_results"]["relationships"].
     """
-
-    # Ensure parameter_results dict exists
-    if "parameter_results" not in state or state["parameter_results"] is None:
-        state["parameter_results"] = {}
 
     llm = get_llm()
 
@@ -60,8 +56,7 @@ def evaluate_relationships(state: GraphState) -> GraphState:
             reasoning=f"Model failure while evaluating relationships: {exc}",
             evidence=[],
         )
-        state["parameter_results"]["relationships"] = fallback
-        return state
+        return {"parameter_results": {"relationships": fallback}}
 
     # ---- Defensive parsing of LLM JSON ----
     score = raw.get("score", 0.0)
@@ -96,5 +91,4 @@ def evaluate_relationships(state: GraphState) -> GraphState:
         evidence=evidence,
     )
 
-    state["parameter_results"]["relationships"] = param_eval
-    return state
+    return {"parameter_results": {"relationships": param_eval}}
